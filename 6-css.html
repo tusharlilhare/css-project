@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Circular Navigation</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(45deg, #ff758c, #ff7eb3);
+      font-family: 'Arial', sans-serif;
+      overflow: hidden;
+    }
+    .nav-container {
+      position: relative;
+      width: 400px;
+      height: 400px;
+    }
+    .toggle-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80px;
+      height: 80px;
+      background: #fff;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      z-index: 10;
+      box-shadow: 0 3px 20px rgba(0,0,0,0.2);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .toggle-btn.active {
+      transform: translate(-50%, -50%) rotate(45deg);
+    }
+    .toggle-btn i {
+      font-size: 30px;
+      color: #ff758c;
+      transition: all 0.4s ease;
+    }
+    .nav-item {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .nav-item a {
+      position: absolute;
+      width: 70px;
+      height: 70px;
+      background: white;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+      box-shadow: 0 3px 15px rgba(0,0,0,0.15);
+      transition: all 0.3s ease;
+    }
+    .nav-item a:hover {
+      transform: scale(1.1);
+      background: #ff7eb3;
+    }
+    .nav-item a:hover i {
+      color: white;
+    }
+    .nav-item a i {
+      font-size: 24px;
+      color: #ff758c;
+      transition: color 0.3s ease;
+    }
+    .content {
+      text-align: center;
+      color: white;
+      max-width: 600px;
+      padding: 0 20px;
+      z-index: 1;
+    }
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+  </style>
+</head>
+<body>
+  <div class="nav-container">
+    <div class="toggle-btn">
+      <i class="fas fa-plus"></i>
+    </div>
+    <div class="nav-item" style="transform: rotate(0deg);">
+      <a href="#" style="transform: rotate(0deg) translate(160px) rotate(0deg);">
+        <i class="fas fa-home"></i>
+      </a>
+    </div>
+    <div class="nav-item" style="transform: rotate(60deg);">
+      <a href="#" style="transform: rotate(-60deg) translate(160px) rotate(60deg);">
+        <i class="fas fa-search"></i>
+      </a>
+    </div>
+    <div class="nav-item" style="transform: rotate(120deg);">
+      <a href="#" style="transform: rotate(-120deg) translate(160px) rotate(120deg);">
+        <i class="fas fa-heart"></i>
+      </a>
+    </div>
+    <div class="nav-item" style="transform: rotate(180deg);">
+      <a href="#" style="transform: rotate(-180deg) translate(160px) rotate(180deg);">
+        <i class="fas fa-user"></i>
+      </a>
+    </div>
+    <div class="nav-item" style="transform: rotate(240deg);">
+      <a href="#" style="transform: rotate(-240deg) translate(160px) rotate(240deg);">
+        <i class="fas fa-cog"></i>
+      </a>
+    </div>
+    <div class="nav-item" style="transform: rotate(300deg);">
+      <a href="#" style="transform: rotate(-300deg) translate(160px) rotate(300deg);">
+        <i class="fas fa-envelope"></i>
+      </a>
+    </div>
+  </div>
+
+  <div class="content">
+    <h1>Circular Navigation Menu</h1>
+    <p>Click the center button to toggle the navigation menu. Each menu item smoothly animates into position with a beautiful circular motion.</p>
+  </div>
+
+  <script>
+    const toggleBtn = document.querySelector('.toggle-btn');
+    const navItems = document.querySelectorAll('.nav-item');
+    
+    toggleBtn.addEventListener('click', () => {
+      toggleBtn.classList.toggle('active');
+      
+      if (toggleBtn.classList.contains('active')) {
+        navItems.forEach((item, index) => {
+          item.style.transition = `transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) ${index * 0.1}s`;
+          item.style.transform = `rotate(${index * 60}deg) translate(0) rotate(-${index * 60}deg)`;
+        });
+      } else {
+        navItems.forEach((item, index) => {
+          item.style.transition = `transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) ${0.5 - index * 0.1}s`;
+          item.style.transform = `rotate(${index * 60}deg)`;
+        });
+      }
+    });
+  </script>
+</body>
+</html>

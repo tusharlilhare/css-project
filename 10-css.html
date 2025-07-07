@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Flip Clock with Minimal JS</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #121212;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+        }
+
+        .clock {
+            display: flex;
+            gap: 10px;
+            perspective: 1000px;
+        }
+
+        .digit-container {
+            position: relative;
+            width: 60px;
+            height: 90px;
+        }
+
+        .digit {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 4rem;
+            font-weight: bold;
+            color: #fff;
+            background: #222;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .digit::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: rgba(0,0,0,0.2);
+        }
+
+        .flip {
+            position: absolute;
+            width: 100%;
+            height: 50%;
+            left: 0;
+            background: #333;
+            transform-style: preserve-3d;
+            backface-visibility: hidden;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 4rem;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .flip-top {
+            top: 0;
+            border-radius: 8px 8px 0 0;
+            align-items: flex-end;
+            padding-bottom: 5px;
+            transform-origin: bottom;
+            z-index: 2;
+        }
+
+        .flip-bottom {
+            bottom: 0;
+            border-radius: 0 0 8px 8px;
+            align-items: flex-start;
+            padding-top: 5px;
+            transform-origin: top;
+            z-index: 1;
+        }
+
+        .flip-bottom::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.2);
+        }
+
+        .colon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 4rem;
+            color: #fff;
+            height: 90px;
+            padding: 0 5px;
+        }
+
+        /* Animation classes */
+        .animate-top {
+            animation: flipTop 0.5s ease-in forwards;
+        }
+
+        .animate-bottom {
+            animation: flipBottom 0.5s ease-out 0.5s forwards;
+        }
+
+        @keyframes flipTop {
+            0% { transform: rotateX(0deg); }
+            100% { transform: rotateX(-90deg); }
+        }
+
+        @keyframes flipBottom {
+            0% { transform: rotateX(90deg); }
+            100% { transform: rotateX(0deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="clock">
+        <!-- Hours -->
+        <div class="digit-container hours-tens">
+            <div class="digit">0</div>
+            <div class="flip flip-top"></div>
+            <div class="flip flip-bottom"></div>
+        </div>
+        <div class="digit-container hours-ones">
+            <div class="digit">0</div>
+            <div class="flip flip-top"></div>
+            <div class="flip flip-bottom"></div>
+        </div>
+        
+        <div class="colon">:</div>
+        
+        <!-- Minutes -->
+        <div class="digit-container minutes-tens">
+            <div class="digit">0</div>
+            <div class="flip flip-top"></div>
+            <div class="flip flip-bottom"></div>
+        </div>
+        <div class="digit-container minutes-ones">
+            <div class="digit">0</div>
+            <div class="flip flip-top"></div>
+            <div class="flip flip-bottom"></div>
+        </div>
+        
+        <div class="colon">:</div>
+        
+        <!-- Seconds -->
+        <div class="digit-container seconds-tens">
+            <div class="digit">0</div>
+            <div class="flip flip-top"></div>
+            <div class="flip flip-bottom"></div>
+        </div>
+        <div class="digit-container seconds-ones">
+            <div class="digit">0</div>
+            <div class="flip flip-top"></div>
+            <div class="flip flip-bottom"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const digitContainers = document.querySelectorAll('.digit-container');
+            let lastValues = {};
+            
+            function updateClock() {
+                const now = new Date();
+                const hours = now.getHours().toString().padStart(2, '0');
+                const minutes = now.getMinutes().toString().padStart(2, '0');
+                const seconds = now.getSeconds().toString().padStart(2, '0');
+                
+                updateDigit('hours-tens', hours[0]);
+                updateDigit('hours-ones', hours[1]);
+                updateDigit('minutes-tens', minutes[0]);
+                updateDigit('minutes-ones', minutes[1]);
+                updateDigit('seconds-tens', seconds[0]);
+                updateDigit('seconds-ones', seconds[1]);
+            }
+            
+            function updateDigit(containerClass, newValue) {
+                const container = document.querySelector(`.${containerClass}`);
+                const digit = container.querySelector('.digit');
+                const flipTop = container.querySelector('.flip-top');
+                const flipBottom = container.querySelector('.flip-bottom');
+                
+                if (!lastValues[containerClass]) {
+                    lastValues[containerClass] = newValue;
+                    digit.textContent = newValue;
+                    return;
+                }
+                
+                if (lastValues[containerClass] !== newValue) {
+                    // Set up flip animation
+                    flipTop.textContent = lastValues[containerClass];
+                    flipBottom.textContent = newValue;
+                    
+                    // Trigger animations
+                    flipTop.classList.remove('animate-top');
+                    flipBottom.classList.remove('animate-bottom');
+                    void flipTop.offsetWidth; // Trigger reflow
+                    flipTop.classList.add('animate-top');
+                    flipBottom.classList.add('animate-bottom');
+                    
+                    // Update digit after animation
+                    setTimeout(() => {
+                        digit.textContent = newValue;
+                        lastValues[containerClass] = newValue;
+                    }, 500);
+                }
+            }
+            
+            // Initialize clock
+            updateClock();
+            
+            // Update every second
+            setInterval(updateClock, 1000);
+        });
+    </script>
+</body>
+</html>

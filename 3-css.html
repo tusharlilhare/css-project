@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    :root {
+      --sunny: linear-gradient(135deg, #ff9d2f, #ffd26f);
+      --rainy: linear-gradient(135deg, #4b79a1, #283e51);
+      --cloudy: linear-gradient(135deg, #bdc3c7, #2c3e50);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #f0f2f5;
+    }
+    .weather-app {
+      width: 350px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+    }
+    .weather-header {
+      padding: 30px 20px;
+      background: var(--sunny);
+      color: white;
+      text-align: center;
+      position: relative;
+    }
+    .location {
+      font-size: 1.5rem;
+      margin-bottom: 5px;
+    }
+    .date {
+      opacity: 0.8;
+      margin-bottom: 20px;
+    }
+    .temperature {
+      font-size: 4rem;
+      font-weight: bold;
+      margin: 20px 0;
+    }
+    .weather-icon {
+      font-size: 5rem;
+      margin: 20px 0;
+      animation: float 3s ease-in-out infinite;
+    }
+    .weather-info {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      background: white;
+      padding: 20px;
+      gap: 15px;
+    }
+    .info-card {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 15px;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+    .info-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .info-card i {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      color: #2196F3;
+    }
+    .forecast {
+      background: white;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid #eee;
+    }
+    .forecast-day {
+      text-align: center;
+      flex: 1;
+    }
+    .forecast-day i {
+      font-size: 1.5rem;
+      margin: 10px 0;
+      color: #FF9800;
+    }
+    .controls {
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+      background: white;
+      border-top: 1px solid #eee;
+    }
+    .weather-btn {
+      background: #2196F3;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .weather-btn:hover {
+      background: #0d8bf2;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+  </style>
+</head>
+<body>
+  <div class="weather-app">
+    <div class="weather-header">
+      <div class="location">New York, NY</div>
+      <div class="date">Monday, July 7, 2025</div>
+      <div class="weather-icon"><i class="fas fa-sun"></i></div>
+      <div class="temperature">28°C</div>
+      <div class="condition">Sunny</div>
+    </div>
+    <div class="weather-info">
+      <div class="info-card">
+        <i class="fas fa-wind"></i>
+        <div>Wind</div>
+        <div class="value">12 km/h</div>
+      </div>
+      <div class="info-card">
+        <i class="fas fa-tint"></i>
+        <div>Humidity</div>
+        <div class="value">45%</div>
+      </div>
+      <div class="info-card">
+        <i class="fas fa-sun"></i>
+        <div>UV Index</div>
+        <div class="value">7</div>
+      </div>
+      <div class="info-card">
+        <i class="fas fa-eye"></i>
+        <div>Visibility</div>
+        <div class="value">16 km</div>
+      </div>
+    </div>
+    <div class="forecast">
+      <div class="forecast-day">
+        <div>Tue</div>
+        <i class="fas fa-cloud"></i>
+        <div>24°C</div>
+      </div>
+      <div class="forecast-day">
+        <div>Wed</div>
+        <i class="fas fa-cloud-sun"></i>
+        <div>26°C</div>
+      </div>
+      <div class="forecast-day">
+        <div>Thu</div>
+        <i class="fas fa-cloud-showers-heavy"></i>
+        <div>22°C</div>
+      </div>
+      <div class="forecast-day">
+        <div>Fri</div>
+        <i class="fas fa-sun"></i>
+        <div>29°C</div>
+      </div>
+    </div>
+    <div class="controls">
+      <button class="weather-btn">Refresh Data</button>
+    </div>
+  </div>
+</body>
+</html>

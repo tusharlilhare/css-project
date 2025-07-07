@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Animated Weather Dashboard</title>
+    <style>
+        /* Base styles */
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            transition: background 2s ease;
+        }
+
+        /* Weather container */
+        .weather-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Day/Night background */
+        .day-sky {
+            background: linear-gradient(135deg, #72c2ff 0%, #0071e3 100%);
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transition: opacity 2s ease;
+        }
+
+        .night-sky {
+            background: linear-gradient(135deg, #0a0e24 0%, #1a1b37 100%);
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 2s ease;
+        }
+
+        /* Sun */
+        .sun {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: #ffde59;
+            border-radius: 50%;
+            top: 50px;
+            left: 50px;
+            box-shadow: 0 0 40px #ffde59;
+            animation: sun-move 30s linear infinite;
+        }
+
+        @keyframes sun-move {
+            0% {
+                transform: translate(0, 0);
+                opacity: 0;
+            }
+            20% {
+                opacity: 1;
+            }
+            80% {
+                opacity: 1;
+            }
+            100% {
+                transform: translate(200px, -100px);
+                opacity: 0;
+            }
+        }
+
+        /* Moon */
+        .moon {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: #f5f5f5;
+            border-radius: 50%;
+            top: 60px;
+            right: 60px;
+            box-shadow: 0 0 30px #f5f5f5;
+            opacity: 0;
+            animation: moon-move 30s linear infinite;
+        }
+
+        @keyframes moon-move {
+            0% {
+                transform: translate(0, 0);
+                opacity: 0;
+            }
+            50% {
+                opacity: 0;
+            }
+            60% {
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-200px, 100px);
+                opacity: 1;
+            }
+        }
+
+        /* Clouds */
+        .cloud {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.9;
+        }
+
+        .cloud1 {
+            width: 80px;
+            height: 30px;
+            top: 80px;
+            left: -100px;
+            animation: cloud-move 20s linear infinite;
+        }
+
+        .cloud2 {
+            width: 120px;
+            height: 45px;
+            top: 120px;
+            left: -150px;
+            animation: cloud-move 25s linear infinite 5s;
+        }
+
+        .cloud3 {
+            width: 60px;
+            height: 20px;
+            top: 60px;
+            left: -80px;
+            animation: cloud-move 15s linear infinite 10s;
+        }
+
+        @keyframes cloud-move {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(500px);
+            }
+        }
+
+        /* Rain */
+        .rain {
+            position: absolute;
+            width: 2px;
+            height: 10px;
+            background: #a8d0e6;
+            opacity: 0;
+            animation: rain-fall 1s linear infinite;
+        }
+
+        @keyframes rain-fall {
+            0% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+        }
+
+        /* Snow */
+        .snow {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0;
+            animation: snow-fall 3s linear infinite;
+        }
+
+        @keyframes snow-fall {
+            0% {
+                transform: translateY(-10px) translateX(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(50px) translateX(20px);
+                opacity: 0;
+            }
+        }
+
+        /* Lightning */
+        .lightning {
+            position: absolute;
+            width: 3px;
+            height: 30px;
+            background: yellow;
+            opacity: 0;
+            left: 150px;
+            top: 50px;
+            box-shadow: 0 0 20px yellow;
+            animation: lightening-flash 8s linear infinite;
+        }
+
+        @keyframes lightening-flash {
+            0%, 95% {
+                opacity: 0;
+            }
+            96%, 97%, 98%, 99% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+
+        /* Weather controls */
+        .controls {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .weather-btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(5px);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .weather-btn:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Active states */
+        .night-mode .day-sky {
+            opacity: 0;
+        }
+
+        .night-mode .night-sky {
+            opacity: 1;
+        }
+
+        .night-mode .moon {
+            opacity: 1;
+        }
+
+        .rain-mode .rain {
+            opacity: 0.6;
+        }
+
+        .snow-mode .snow {
+            opacity: 0.8;
+        }
+
+        .lightning-mode .lightning {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="weather-container" id="weather">
+        <div class="day-sky"></div>
+        <div class="night-sky"></div>
+        
+        <div class="sun"></div>
+        <div class="moon"></div>
+        
+        <div class="cloud cloud1"></div>
+        <div class="cloud cloud2"></div>
+        <div class="cloud cloud3"></div>
+        
+        <!-- Rain elements -->
+        <div class="rain" style="left: 50px; animation-delay: 0s;"></div>
+        <div class="rain" style="left: 70px; animation-delay: 0.2s;"></div>
+        <div class="rain" style="left: 90px; animation-delay: 0.4s;"></div>
+        <div class="rain" style="left: 110px; animation-delay: 0.6s;"></div>
+        <div class="rain" style="left: 130px; animation-delay: 0.8s;"></div>
+        <div class="rain" style="left: 150px; animation-delay: 0.1s;"></div>
+        <div class="rain" style="left: 170px; animation-delay: 0.3s;"></div>
+        <div class="rain" style="left: 190px; animation-delay: 0.5s;"></div>
+        <div class="rain" style="left: 210px; animation-delay: 0.7s;"></div>
+        <div class="rain" style="left: 230px; animation-delay: 0.9s;"></div>
+        
+        <!-- Snow elements -->
+        <div class="snow" style="left: 40px; animation-delay: 0s;"></div>
+        <div class="snow" style="left: 80px; animation-delay: 0.5s;"></div>
+        <div class="snow" style="left: 120px; animation-delay: 1s;"></div>
+        <div class="snow" style="left: 160px; animation-delay: 1.5s;"></div>
+        <div class="snow" style="left: 200px; animation-delay: 2s;"></div>
+        <div class="snow" style="left: 240px; animation-delay: 2.5s;"></div>
+        
+        <div class="lightning"></div>
+        
+        <div class="controls">
+            <button class="weather-btn" onclick="toggleDayNight()">Day/Night</button>
+            <button class="weather-btn" onclick="toggleRain()">Rain</button>
+            <button class="weather-btn" onclick="toggleSnow()">Snow</button>
+            <button class="weather-btn" onclick="toggleLightning()">Lightning</button>
+        </div>
+    </div>
+
+    <script>
+        function toggleDayNight() {
+            document.getElementById('weather').classList.toggle('night-mode');
+        }
+        
+        function toggleRain() {
+            document.getElementById('weather').classList.toggle('rain-mode');
+        }
+        
+        function toggleSnow() {
+            document.getElementById('weather').classList.toggle('snow-mode');
+        }
+        
+        function toggleLightning() {
+            document.getElementById('weather').classList.toggle('lightning-mode');
+        }
+    </script>
+</body>
+</html>
